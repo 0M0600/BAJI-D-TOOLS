@@ -3,89 +3,162 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BAJI D TOOLS - SIGNALEMENT</title>
+<title>BAJI D TOOLS</title>
 <style>
-body{background:#000;color:#00ff88;font-family:monospace;padding:15px;display:flex;flex-direction:column;align-items:center}
-h1{text-align:center;text-shadow:0 0 10px #00ff88;letter-spacing:4px}
-.box{border:2px solid #00ff88;border-radius:12px;padding:15px;width:95%;max-width:550px;background:#001a0f;margin-bottom:10px}
-input,textarea{width:100%;background:#000;border:1px solid #00ff88;color:#00ff88;padding:10px;border-radius:8px;margin-top:8px;box-sizing:border-box}
-#emails{font-size:11px;height:80px;color:#88ffaa}
-.carte{border:1px solid #00ff88;background:#001a0f;padding:15px;border-radius:10px;margin-bottom:15px;width:95%;max-width:700px}
-.carte h3{margin:0 0 8px 0;color:#00ff88}
-.carte p{white-space:pre-wrap;color:#ccffdd;font-size:13px;line-height:1.5}
-.btn{background:#00ff88;color:#000;border:none;padding:8px 12px;border-radius:6px;font-weight:bold;cursor:pointer;margin:5px 5px 0 0}
-.btn2{background:#003311;color:#00ff88;border:1px solid #00ff88}
-#lettres{width:100%;display:flex;flex-direction:column;align-items:center;margin-top:20px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#000;color:#00ff41;font-family:'Courier New',monospace;overflow-x:hidden}
+canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1}
+.header{text-align:center;padding:40px 20px 10px;z-index:1;position:relative}
+.header h1{font-size:48px;letter-spacing:10px;text-shadow:0 0 20px #00ff41;animation:glow 2s infinite}
+@keyframes glow{0%,100%{text-shadow:0 0 20px #00ff41}50%{text-shadow:0 0 40px #00ff41}}
+.top-box{max-width:700px;margin:20px auto;padding:18px;background:rgba(0,40,0,0.9);border:2px solid #00ff41;border-radius:10px;z-index:1;position:relative;box-shadow:0 0 20px #00ff41}
+.top-box label{display:block;margin-bottom:8px;font-weight:bold;letter-spacing:2px}
+.top-box input{width:100%;padding:14px;background:#000;border:1px solid #00ff41;color:#00ff41;font-size:18px;border-radius:6px;letter-spacing:2px}
+.top-box input:focus{outline:none;box-shadow:0 0 15px #00ff41}
+.container{max-width:700px;margin:20px auto;padding:0 20px 20px;z-index:1;position:relative}
+.card{background:rgba(0,20,0,0.88);border:1px solid #00ff41;padding:18px;border-radius:10px;margin-bottom:18px}
+.card h3{color:#00ff41;margin-bottom:10px}
+.card textarea{width:100%;height:160px;background:#000;border:1px solid #00ff41;color:#caffd0;padding:12px;font-family:Arial;border-radius:6px;line-height:1.6}
+button{width:100%;margin-top:12px;background:transparent;border:1px solid #00ff41;color:#00ff41;padding:12px;font-weight:bold;letter-spacing:3px;cursor:pointer;border-radius:6px}
+button:hover{background:#00ff41;color:#000;box-shadow:0 0 25px #00ff41}
 </style>
 </head>
 <body>
-<h1>BAJI D<br>TOOLS<br><span style="font-size:0.5em">/// PLUIE VERTE ///</span></h1>
+<canvas id="matrix"></canvas>
+<div class="header"><h1>BAJI D TOOLS</h1><p>/// PLUIE VERTE ///</p></div>
 
-<div class="box">
-<label>📟 NUMERO CIBLE (arnaqueur/pirate):</label>
-<input id="numero" placeholder="+243..." oninput="generer()">
+<div class="top-box">
+<label>📱 NUMÉRO WHATSAPP CIBLE :</label>
+<input type="text" id="numeroInput" placeholder="Ex: +243 810 000 000" oninput="updateLettres()">
+<p style="font-size:11px;margin-top:8px;color:#00ff4199">Ce numéro sera auto-ajouté dans les 10 lettres d'amour</p>
 </div>
 
-<div class="box">
-<label>📧 15 ADRESSES ASSISTANCE WHATSAPP (modifiable):</label>
-<textarea id="emails">support@whatsapp.com
-android_web@support.whatsapp.com
-iphone_web@support.whatsapp.com
-webclient_web@support.whatsapp.com
-sms@support.whatsapp.com
-abuse@support.whatsapp.com
-business@support.whatsapp.com
-business-api@support.whatsapp.com
-accessibility@support.whatsapp.com
-privacy@whatsapp.com
-legal@whatsapp.com
-appeals@support.whatsapp.com
-security@whatsapp.com
-abuse@whatsapp.com
-support@fb.com</textarea>
-<div style="font-size:10px;opacity:0.6;margin-top:5px">Séparées par retour à la ligne. Tu peux les changer.</div>
-</div>
-
-<div id="lettres"></div>
+<div class="container" id="grid"></div>
 
 <script>
+// PLUIE VERTE
+const canvas=document.getElementById('matrix');const ctx=canvas.getContext('2d');
+canvas.width=window.innerWidth;canvas.height=window.innerHeight;
+const letters="01 BAJI D TOOLS";const fontSize=14;const cols=canvas.width/fontSize;const drops=[];
+for(let x=0;x<cols;x++) drops[x]=1;
+function draw(){ctx.fillStyle='rgba(0,0,0,0.05)';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.fillStyle='#00ff41';ctx.font=fontSize+'px monospace';for(let i=0;i<drops.length;i++){const t=letters.charAt(Math.floor(Math.random()*letters.length));ctx.fillText(t,i*fontSize,drops[i]*fontSize);if(drops[i]*fontSize>canvas.height&&Math.random()>0.975) drops[i]=0;drops[i]++;}}
+setInterval(draw,33);
+
+const EMAILS=`support@whatsapp.com,android@support.whatsapp.com,iphone@support.whatsapp.com,wp@support.whatsapp.com,webclient@support.whatsapp.com,smb@support.whatsapp.com,businesscomplaints@support.whatsapp.com,accessibility@support.whatsapp.com,privacy@whatsapp.com,kaios@support.whatsapp.com,smb_web@support.whatsapp.com,android_web@support.whatsapp.com,iphone_web@support.whatsapp.com,abuse@support.whatsapp.com`;
+
 const baseLettres=[
-{titre:"1 - Signalement Arnaque WhatsApp",texte:"Objet: Signalement arnaque - {NUMERO}\n\nBonjour equipe securite WhatsApp,\n\nJe signale le numero {NUMERO} pour tentative d'arnaque, fausses promesses de gains, demande d'argent.\nPreuves: captures d'ecran disponibles.\nMerci de bloquer ce compte pour proteger la communaute.\n\nCordialement."},
-{titre:"2 - Piratage de Compte",texte:"Objet: Piratage de compte par {NUMERO}\n\nBonjour,\nMon compte a ete pirate par {NUMERO}. Cette personne se fait passer pour moi et demande de l'argent a mes contacts.\nMon numero legitime: [METTRE VOTRE NUMERO]\nNumero pirate: {NUMERO}\nIntervention urgente SVP."},
-{titre:"3 - Usurpation d'Identite",texte:"Objet: Usurpation d'identite - {NUMERO}\n\nLe numero {NUMERO} utilise ma photo de profil et mon nom pour arnaquer.\nC'est une usurpation grave.\nJe demande suspension immediate."},
-{titre:"4 - Escroquerie M-Pesa / Airtel Money",texte:"Objet: Escroquerie financiere {NUMERO}\n\nDénonciation d'escroquerie organisee par {NUMERO}\nMode: faux depot, promesse de doubler argent Airtel Money / M-Pesa.\nPlusieurs victimes a Kinshasa."},
-{titre:"5 - Harcelement et Menaces",texte:"Objet: Harcelement - {NUMERO}\n\nLe numero {NUMERO} me harcele avec menaces et chantage.\nJe me sens en insecurite. Merci de conserver preuves et bloquer."},
-{titre:"6 - Faux Support BAJI D TOOLS",texte:"Objet: Faux support technique - {NUMERO}\n\nLe numero {NUMERO} se fait passer pour le support BAJI D TOOLS et demande des codes OTP a 6 chiffres.\nC'est une arnaque."},
-{titre:"7 - Recuperation Compte Vole",texte:"Objet: Aide recuperation compte apres {NUMERO}\n\nJ'ai perdu acces apres interaction avec {NUMERO} qui a vole mon code verification.\nAidez-moi a recuperer mon compte SVP."},
-{titre:"8 - Reseau d'Arnaqueurs",texte:"Objet: Groupe d'arnaqueurs - chef {NUMERO}\n\nJe signale un reseau dont {NUMERO} est le chef. Ils ont un groupe WhatsApp avec techniques de piratage."},
-{titre:"9 - Lien Phishing Dangereux",texte:"Objet: Phishing envoye par {NUMERO}\n\nLe numero {NUMERO} diffuse un lien phishing qui vole mots de passe Facebook/WhatsApp.\nMerci de bloquer diffusion."},
-{titre:"10 - Rapport Officiel Autorites",texte:"Objet: Plainte officielle contre {NUMERO}\n\nJe porte plainte contre titulaire de {NUMERO}\nFaits: escroquerie, piratage, usurpation.\nPreuves: conversations WhatsApp.\nDemande enquete."},
+{ titre:"G1 - PREMIER REGARD", corps:`Mon amour {NUMERO},
+
+Depuis que j'ai vu ton numéro {NUMERO} s'afficher, mon coeur a vibré.
+
+Tu es la personne derrière ce {NUMERO} qui hante mes pensées jour et nuit.
+
+Je pense à toi, à toi seule {NUMERO}.
+
+`},
+{ titre:"G2 - TU ME MANQUES", corps:`C'est fou {NUMERO},
+
+Ton numéro {NUMERO} est devenu mon contact préféré. Je regarde si tu es en ligne, si tu as vu mon message.
+
+Tu me manques {NUMERO}, terriblement.
+
+Reviens me parler.
+
+`},
+{ titre:"G3 - LA NUIT", corps:`Bonne nuit {NUMERO},
+
+Je m'endors avec ton {NUMERO} ouvert devant moi. J'espère que tu rêveras de moi cette nuit.
+
+Dors bien mon {NUMERO} préféré.
+
+`},
+{ titre:"G4 - FORCE", corps:`Mon {NUMERO},
+
+Je sais que tu traverses des choses {NUMERO}. Je veux que tu saches que je suis là, derrière ce message, prêt à t'écouter.
+
+Tu es forte {NUMERO}.
+
+`},
+{ titre:"G5 - JALOUSIE DOUCE", corps:`{NUMERO},
+
+Je deviens fou quand je vois ton {NUMERO} en ligne mais pas pour moi.
+
+Dis-moi que ton coeur est encore à moi, {NUMERO}.
+
+`},
+{ titre:"G6 - PROMESSE", corps:`Ma promesse à {NUMERO},
+
+Je te promets {NUMERO} de ne jamais te laisser. Ton numéro restera gravé dans mon téléphone et dans mon coeur.
+
+Pour toujours {NUMERO}.
+
+`},
+{ titre:"G7 - PARDON", corps:`Pardon {NUMERO},
+
+Pardon si j'ai mal parlé à {NUMERO}. Ce n'était pas mon intention de blesser la personne derrière ce {NUMERO}.
+
+Pardonne-moi {NUMERO}.
+
+`},
+{ titre:"G8 - AVENIR", corps:`Imagine {NUMERO},
+
+Toi {NUMERO} et moi, on efface la distance. Plus de WhatsApp, juste nous deux.
+
+On construit notre histoire {NUMERO}.
+
+`},
+{ titre:"G9 - PASSION", corps:`{NUMERO},
+
+Ton {NUMERO} me rend fou. J'ai envie de t'entendre, de te voir, de tout toi {NUMERO}.
+
+Tu es mon obsession {NUMERO}.
+
+`},
+{ titre:"G10 - ETERNITE", corps:`Pour toujours {NUMERO},
+
+Si on me demande mon numéro préféré, je dirai {NUMERO}.
+
+Je t'aime {NUMERO}, aujourd'hui, demain, pour toujours.
+
+Ton Baji
+`},
 ];
-function generer(){
- const num=document.getElementById('numero').value||'+243...';
- const cont=document.getElementById('lettres');
- cont.innerHTML='';
- baseLettres.forEach((l,i)=>{
-  const txt=l.texte.replaceAll('{NUMERO}',num);
-  const div=document.createElement('div');
-  div.className='carte';
-  div.innerHTML=`<h3>${l.titre}</h3><p id="txt${i}">${txt}</p><button class="btn" onclick="copier(${i})">📋 Copier</button><button class="btn" onclick="envoyerMail(${i})">📧 Envoyer aux 15 mails</button><button class="btn btn2" onclick="envoyerWA(${i})">📤 WhatsApp</button>`;
-  cont.appendChild(div);
- });
+
+const grid=document.getElementById('grid');
+function render(){
+  grid.innerHTML='';
+  baseLettres.forEach((l,i)=>{
+    const div=document.createElement('div');div.className='card';
+    div.innerHTML=`<h3>${l.titre}</h3><textarea id="body${i}">${l.corps}</textarea><button onclick="envoyer(${i})">[ ENVOYER ${l.titre} ]</button>`;
+    grid.appendChild(div);
+  });
+  updateLettres();
 }
-function copier(i){navigator.clipboard.writeText(document.getElementById('txt'+i).innerText);alert('Copié !');}
-function envoyerMail(i){
- const txt=document.getElementById('txt'+i).innerText;
- const emails=document.getElementById('emails').value.split('\\n').join(',');
- const sujet=encodeURIComponent(document.querySelectorAll('.carte h3')[i].innerText);
- const body=encodeURIComponent(txt);
- window.location.href=`mailto:${emails}?subject=${sujet}&body=${body}`;
+function updateLettres(){
+  const num=document.getElementById('numeroInput').value || '{NUMERO}';
+  baseLettres.forEach((l,i)=>{
+    const ta=document.getElementById(`body${i}`);
+    if(ta){
+      // On remplace {NUMERO} par le numéro tapé
+      let nouveauTexte = l.corps.replace(/{NUMERO}/g, num);
+      // Si l'utilisateur a déjà modifié manuellement, on ne veut pas écraser s'il a enlevé le tag, donc on garde logique simple: on remet le modèle + numéro
+      // Pour garder les modifs manuelles, on remplace juste le placeholder dans la valeur actuelle
+      if(ta.value.includes('{NUMERO}')) {
+        ta.value = ta.value.replace(/{NUMERO}/g, num);
+      } else {
+        // Si le numéro change, on remplace l'ancien numéro par le nouveau
+        // Astuce simple: on regénère à partir du modèle
+        ta.value = nouveauTexte;
+      }
+    }
+  });
 }
-function envoyerWA(i){
- const txt=document.getElementById('txt'+i).innerText;
- window.open('https://wa.me/?text='+encodeURIComponent(txt),'_blank');
+function envoyer(i){
+  const sujet=encodeURIComponent(baseLettres[i].titre);
+  const corps=encodeURIComponent(document.getElementById(`body${i}`).value);
+  window.location.href=`mailto:?bcc=${EMAILS}&subject=${sujet}&body=${corps}`;
 }
-generer();
+render();
 </script>
 </body>
 </html>
