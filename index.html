@@ -3,54 +3,87 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BAJI D TOOLS /// PLUIE VERTE ///</title>
+<title>BAJI D TOOLS - SIGNALEMENT</title>
 <style>
-body{margin:0;background:#000;color:#00ff88;font-family:monospace;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding:20px;}
-h1{color:#00ff88;text-shadow:0 0 10px #00ff88;text-align:center;font-size:2.5em;margin:10px;letter-spacing:5px;line-height:1.2;}
-.subtitle{text-align:center;opacity:0.7;margin-bottom:25px;letter-spacing:2px;}
-.box{border:2px solid #00ff88;border-radius:15px;padding:20px;width:90%;max-width:500px;box-shadow:0 0 20px #00ff8855;background:#001a0f;margin-bottom:30px;}
-.box input{width:100%;background:#000;border:1px solid #00ff88;color:#00ff88;padding:12px;margin-top:10px;border-radius:8px;font-size:18px;box-sizing:border-box;outline:none;}
-.box .info{font-size:12px;opacity:0.6;margin-top:8px;}
-#lettres{width:95%;max-width:700px;display:flex;flex-direction:column;gap:20px;}
-.carte{background:#001a0f;border:1px solid #00ff88;border-radius:12px;padding:18px;box-shadow:0 0 10px #00ff8833;}
-.carte h3{margin:0 0 10px 0;color:#00ff88;text-transform:uppercase;}
-.carte p{color:#ccffdd;line-height:1.6;white-space:pre-wrap;font-size:14px;}
-.carte button{background:#00ff88;color:#000;border:none;padding:8px 14px;border-radius:6px;font-weight:bold;cursor:pointer;margin-right:10px;}
+body{background:#000;color:#00ff88;font-family:monospace;padding:15px;display:flex;flex-direction:column;align-items:center}
+h1{text-align:center;text-shadow:0 0 10px #00ff88;letter-spacing:4px}
+.box{border:2px solid #00ff88;border-radius:12px;padding:15px;width:95%;max-width:550px;background:#001a0f;margin-bottom:10px}
+input,textarea{width:100%;background:#000;border:1px solid #00ff88;color:#00ff88;padding:10px;border-radius:8px;margin-top:8px;box-sizing:border-box}
+#emails{font-size:11px;height:80px;color:#88ffaa}
+.carte{border:1px solid #00ff88;background:#001a0f;padding:15px;border-radius:10px;margin-bottom:15px;width:95%;max-width:700px}
+.carte h3{margin:0 0 8px 0;color:#00ff88}
+.carte p{white-space:pre-wrap;color:#ccffdd;font-size:13px;line-height:1.5}
+.btn{background:#00ff88;color:#000;border:none;padding:8px 12px;border-radius:6px;font-weight:bold;cursor:pointer;margin:5px 5px 0 0}
+.btn2{background:#003311;color:#00ff88;border:1px solid #00ff88}
+#lettres{width:100%;display:flex;flex-direction:column;align-items:center;margin-top:20px}
 </style>
 </head>
 <body>
-<h1>BAJI D<br>TOOLS</h1>
-<div class="subtitle">/// PLUIE VERTE ///</div>
+<h1>BAJI D<br>TOOLS<br><span style="font-size:0.5em">/// PLUIE VERTE ///</span></h1>
+
 <div class="box">
-<label>📟 NUMÉRO WHATSAPP CIBLE :</label>
-<input type="text" id="numero" placeholder="+243 8XX XXX XXX" oninput="generer()">
-<div class="info">Ce numéro sera auto-ajouté dans les 10 lettres de signalement</div>
+<label>📟 NUMERO CIBLE (arnaqueur/pirate):</label>
+<input id="numero" placeholder="+243..." oninput="generer()">
 </div>
+
+<div class="box">
+<label>📧 15 ADRESSES ASSISTANCE WHATSAPP (modifiable):</label>
+<textarea id="emails">support@whatsapp.com
+android_web@support.whatsapp.com
+iphone_web@support.whatsapp.com
+webclient_web@support.whatsapp.com
+sms@support.whatsapp.com
+abuse@support.whatsapp.com
+business@support.whatsapp.com
+business-api@support.whatsapp.com
+accessibility@support.whatsapp.com
+privacy@whatsapp.com
+legal@whatsapp.com
+appeals@support.whatsapp.com
+security@whatsapp.com
+abuse@whatsapp.com
+support@fb.com</textarea>
+<div style="font-size:10px;opacity:0.6;margin-top:5px">Séparées par retour à la ligne. Tu peux les changer.</div>
+</div>
+
 <div id="lettres"></div>
+
 <script>
-const baseLettres = [
-{titre: "1 - Signalement arnaque WhatsApp", texte: `Objet : Signalement d'une tentative d'arnaque\n\nBonjour équipe de sécurité,\n\nJe signale le numéro : {NUMERO}\nCe numéro tente d'arnaquer avec fausses promesses de gains et demandes d'argent.\nMerci de bloquer ce numéro.`},
-{titre: "2 - Signalement piratage", texte: `Objet : Mon compte piraté\n\nMon compte a été piraté par le numéro : {NUMERO}\nIl se fait passer pour moi et demande de l'argent à mes contacts.\nMerci d'intervenir urgemment.`},
-{titre: "3 - Usurpation d'identité", texte: `Le numéro {NUMERO} utilise ma photo et mon nom pour arnaquer.\nC'est une usurpation grave. Merci de suspendre ce compte.`},
-{titre: "4 - Escroquerie financière", texte: `Je dénonce une escroquerie par {NUMERO}\nMode : faux dépôt Airtel Money / M-Pesa, promesse de doubler l'argent.`},
-{titre: "5 - Harcèlement et menaces", texte: `Le numéro {NUMERO} me harcèle avec menaces et chantage.\nJe demande des mesures de sécurité.`},
-{titre: "6 - Faux support", texte: `Le numéro {NUMERO} se fait passer pour le support BAJI D TOOLS pour voler des codes OTP.`},
-{titre: "7 - Récupération de compte", texte: `J'ai perdu l'accès après interaction avec {NUMERO}\nIl a volé mon code à 6 chiffres. Aidez-moi à récupérer.`},
-{titre: "8 - Groupe d'arnaqueurs", texte: `Je signale un réseau dont le chef est {NUMERO}\nIls partagent des techniques de piratage dans un groupe.`},
-{titre: "9 - Lien de phishing", texte: `Le numéro {NUMERO} envoie un lien de phishing qui vole les mots de passe. Merci de bloquer.`},
-{titre: "10 - Rapport officiel autorités", texte: `Rapport officiel contre {NUMERO}\nFaits : escroquerie, piratage, usurpation. Demande d'enquête.`},
+const baseLettres=[
+{titre:"1 - Signalement Arnaque WhatsApp",texte:"Objet: Signalement arnaque - {NUMERO}\n\nBonjour equipe securite WhatsApp,\n\nJe signale le numero {NUMERO} pour tentative d'arnaque, fausses promesses de gains, demande d'argent.\nPreuves: captures d'ecran disponibles.\nMerci de bloquer ce compte pour proteger la communaute.\n\nCordialement."},
+{titre:"2 - Piratage de Compte",texte:"Objet: Piratage de compte par {NUMERO}\n\nBonjour,\nMon compte a ete pirate par {NUMERO}. Cette personne se fait passer pour moi et demande de l'argent a mes contacts.\nMon numero legitime: [METTRE VOTRE NUMERO]\nNumero pirate: {NUMERO}\nIntervention urgente SVP."},
+{titre:"3 - Usurpation d'Identite",texte:"Objet: Usurpation d'identite - {NUMERO}\n\nLe numero {NUMERO} utilise ma photo de profil et mon nom pour arnaquer.\nC'est une usurpation grave.\nJe demande suspension immediate."},
+{titre:"4 - Escroquerie M-Pesa / Airtel Money",texte:"Objet: Escroquerie financiere {NUMERO}\n\nDénonciation d'escroquerie organisee par {NUMERO}\nMode: faux depot, promesse de doubler argent Airtel Money / M-Pesa.\nPlusieurs victimes a Kinshasa."},
+{titre:"5 - Harcelement et Menaces",texte:"Objet: Harcelement - {NUMERO}\n\nLe numero {NUMERO} me harcele avec menaces et chantage.\nJe me sens en insecurite. Merci de conserver preuves et bloquer."},
+{titre:"6 - Faux Support BAJI D TOOLS",texte:"Objet: Faux support technique - {NUMERO}\n\nLe numero {NUMERO} se fait passer pour le support BAJI D TOOLS et demande des codes OTP a 6 chiffres.\nC'est une arnaque."},
+{titre:"7 - Recuperation Compte Vole",texte:"Objet: Aide recuperation compte apres {NUMERO}\n\nJ'ai perdu acces apres interaction avec {NUMERO} qui a vole mon code verification.\nAidez-moi a recuperer mon compte SVP."},
+{titre:"8 - Reseau d'Arnaqueurs",texte:"Objet: Groupe d'arnaqueurs - chef {NUMERO}\n\nJe signale un reseau dont {NUMERO} est le chef. Ils ont un groupe WhatsApp avec techniques de piratage."},
+{titre:"9 - Lien Phishing Dangereux",texte:"Objet: Phishing envoye par {NUMERO}\n\nLe numero {NUMERO} diffuse un lien phishing qui vole mots de passe Facebook/WhatsApp.\nMerci de bloquer diffusion."},
+{titre:"10 - Rapport Officiel Autorites",texte:"Objet: Plainte officielle contre {NUMERO}\n\nJe porte plainte contre titulaire de {NUMERO}\nFaits: escroquerie, piratage, usurpation.\nPreuves: conversations WhatsApp.\nDemande enquete."},
 ];
 function generer(){
-  const num = document.getElementById('numero').value || '+243 8XX XXX XXX';
-  const cont = document.getElementById('lettres');
-  cont.innerHTML = '';
-  baseLettres.forEach((l, i)=>{
-    const texteFinal = l.texte.replaceAll('{NUMERO}', num);
-    const div = document.createElement('div');
-    div.className = 'carte';
-    div.innerHTML = `<h3>${l.titre}</h3><p id="txt${i}">${texteFinal}</p><div><button onclick="navigator.clipboard.writeText(document.getElementById('txt${i}').innerText);alert('Copié!')">📋 Copier</button></div>`;
-    cont.appendChild(div);
-  });
+ const num=document.getElementById('numero').value||'+243...';
+ const cont=document.getElementById('lettres');
+ cont.innerHTML='';
+ baseLettres.forEach((l,i)=>{
+  const txt=l.texte.replaceAll('{NUMERO}',num);
+  const div=document.createElement('div');
+  div.className='carte';
+  div.innerHTML=`<h3>${l.titre}</h3><p id="txt${i}">${txt}</p><button class="btn" onclick="copier(${i})">📋 Copier</button><button class="btn" onclick="envoyerMail(${i})">📧 Envoyer aux 15 mails</button><button class="btn btn2" onclick="envoyerWA(${i})">📤 WhatsApp</button>`;
+  cont.appendChild(div);
+ });
+}
+function copier(i){navigator.clipboard.writeText(document.getElementById('txt'+i).innerText);alert('Copié !');}
+function envoyerMail(i){
+ const txt=document.getElementById('txt'+i).innerText;
+ const emails=document.getElementById('emails').value.split('\\n').join(',');
+ const sujet=encodeURIComponent(document.querySelectorAll('.carte h3')[i].innerText);
+ const body=encodeURIComponent(txt);
+ window.location.href=`mailto:${emails}?subject=${sujet}&body=${body}`;
+}
+function envoyerWA(i){
+ const txt=document.getElementById('txt'+i).innerText;
+ window.open('https://wa.me/?text='+encodeURIComponent(txt),'_blank');
 }
 generer();
 </script>
