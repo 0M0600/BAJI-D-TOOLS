@@ -3,166 +3,56 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BAJI D TOOLS</title>
+<title>BAJI D TOOLS /// PLUIE VERTE ///</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:#000;color:#00ff41;font-family:'Courier New',monospace;overflow-x:hidden}
-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1}
-.header{text-align:center;padding:40px 20px 10px;z-index:1;position:relative}
-.header h1{font-size:48px;letter-spacing:10px;text-shadow:0 0 20px #00ff41;animation:glow 2s infinite}
-@keyframes glow{0%,100%{text-shadow:0 0 20px #00ff41}50%{text-shadow:0 0 40px #00ff41}}
-.top-box{max-width:700px;margin:20px auto;padding:18px;background:rgba(0,40,0,0.9);border:2px solid #00ff41;border-radius:10px;z-index:1;position:relative;box-shadow:0 0 20px #00ff41}
-.top-box label{display:block;margin-bottom:8px;font-weight:bold;letter-spacing:2px}
-.top-box input{width:100%;padding:14px;background:#000;border:1px solid #00ff41;color:#00ff41;font-size:18px;border-radius:6px;letter-spacing:2px}
-.top-box input:focus{outline:none;box-shadow:0 0 15px #00ff41}
-.container{max-width:700px;margin:20px auto;padding:0 20px 20px;z-index:1;position:relative}
-.card{background:rgba(0,20,0,0.88);border:1px solid #00ff41;padding:18px;border-radius:10px;margin-bottom:18px}
-.card h3{color:#00ff41;margin-bottom:10px}
-.card textarea{width:100%;height:160px;background:#000;border:1px solid #00ff41;color:#caffd0;padding:12px;font-family:Arial;border-radius:6px;line-height:1.6}
-button{width:100%;margin-top:12px;background:transparent;border:1px solid #00ff41;color:#00ff41;padding:12px;font-weight:bold;letter-spacing:3px;cursor:pointer;border-radius:6px}
-button:hover{background:#00ff41;color:#000;box-shadow:0 0 25px #00ff41}
+body{margin:0;background:#000;color:#00ff88;font-family:monospace;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding:20px;}
+h1{color:#00ff88;text-shadow:0 0 10px #00ff88;text-align:center;font-size:2.5em;margin:10px;letter-spacing:5px;line-height:1.2;}
+.subtitle{text-align:center;opacity:0.7;margin-bottom:25px;letter-spacing:2px;}
+.box{border:2px solid #00ff88;border-radius:15px;padding:20px;width:90%;max-width:500px;box-shadow:0 0 20px #00ff8855;background:#001a0f;margin-bottom:30px;}
+.box input{width:100%;background:#000;border:1px solid #00ff88;color:#00ff88;padding:12px;margin-top:10px;border-radius:8px;font-size:18px;box-sizing:border-box;outline:none;}
+.box .info{font-size:12px;opacity:0.6;margin-top:8px;}
+#lettres{width:95%;max-width:700px;display:flex;flex-direction:column;gap:20px;}
+.carte{background:#001a0f;border:1px solid #00ff88;border-radius:12px;padding:18px;box-shadow:0 0 10px #00ff8833;}
+.carte h3{margin:0 0 10px 0;color:#00ff88;text-transform:uppercase;}
+.carte p{color:#ccffdd;line-height:1.6;white-space:pre-wrap;font-size:14px;}
+.carte button{background:#00ff88;color:#000;border:none;padding:8px 14px;border-radius:6px;font-weight:bold;cursor:pointer;margin-right:10px;}
 </style>
 </head>
 <body>
-<canvas id="matrix"></canvas>
-<div class="header"><h1>BAJI D TOOLS</h1><p>/// PLUIE VERTE ///</p></div>
-
-<div class="top-box">
-<label>📱 NUMÉRO WHATSAPP CIBLE :</label>
-<input type="text" id="numeroInput" placeholder="Ex: +243 810 000 000" oninput="updateLettres()">
-<p style="font-size:11px;margin-top:8px;color:#00ff4199">Ce numéro sera auto-ajouté dans les 10 lettres d'amour</p>
+<h1>BAJI D<br>TOOLS</h1>
+<div class="subtitle">/// PLUIE VERTE ///</div>
+<div class="box">
+<label>📟 NUMÉRO WHATSAPP CIBLE :</label>
+<input type="text" id="numero" placeholder="+243 8XX XXX XXX" oninput="generer()">
+<div class="info">Ce numéro sera auto-ajouté dans les 10 lettres de signalement</div>
 </div>
-
-<div class="container" id="grid"></div>
-
+<div id="lettres"></div>
 <script>
-// PLUIE VERTE
-const canvas=document.getElementById('matrix');const ctx=canvas.getContext('2d');
-canvas.width=window.innerWidth;canvas.height=window.innerHeight;
-const letters="01 BAJI D TOOLS";const fontSize=14;const cols=canvas.width/fontSize;const drops=[];
-for(let x=0;x<cols;x++) drops[x]=1;
-function draw(){ctx.fillStyle='rgba(0,0,0,0.05)';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.fillStyle='#00ff41';ctx.font=fontSize+'px monospace';for(let i=0;i<drops.length;i++){const t=letters.charAt(Math.floor(Math.random()*letters.length));ctx.fillText(t,i*fontSize,drops[i]*fontSize);if(drops[i]*fontSize>canvas.height&&Math.random()>0.975) drops[i]=0;drops[i]++;}}
-setInterval(draw,33);
-
-const EMAILS=`support@whatsapp.com,android@support.whatsapp.com,iphone@support.whatsapp.com,wp@support.whatsapp.com,webclient@support.whatsapp.com,smb@support.whatsapp.com,businesscomplaints@support.whatsapp.com,accessibility@support.whatsapp.com,privacy@whatsapp.com,kaios@support.whatsapp.com,smb_web@support.whatsapp.com,android_web@support.whatsapp.com,iphone_web@support.whatsapp.com,abuse@support.whatsapp.com`;
-
-const baseLettres=[
-{ titre:"G1 - PREMIER REGARD", corp: Te envío este enlace para que puedas unirte a este grupo de Telegram, el mayor secreto para ganar dinero.  Mi vida ha cambiado totalmente desde que comencé a invertir en esta empresa, únete y nunca más buscarás trabajo.  Créeme, tu historia definitivamente cambiará con solo un paso.  ¿Definitivamente gana entre $3000 y $6000 cada día retirando fondos a su cuenta bancaria?  sin pagarle a nadie, búscanos en Google, somos los mejores, mejora tu inversión y sé tu propio jefe, comienza a invertir rápido, ✅ 100% seguro ✅, 👇👇👇👇👇💯   También contáctanos vía WhatsApp e inicia
-{NUMÉRO}
-                                                               $7000 GHANA $7.0000
-                                                               $9000 GHANA $9.0000
-                                                               $40000 GHANA $4.0000
-                                                               $5000 GHANA $5.00000
-                                                               $6000 GHANA $6.00000
-                                                               $7000 GHANA $7.0000
-                                                               $800 GHANA $8.000
-                                                               $9000 GHANA $9.0000
-                                                              1.0000 dólares EE.UU. GHANA 100.000 dólares EE.UU.
-
-`},
-{ titre:"G2 - TU ME MANQUES", corps:`C'est fou {NUMERO},
-
-Ton numéro {NUMERO} est devenu mon contact préféré. Je regarde si tu es en ligne, si tu as vu mon message.
-
-Tu me manques {NUMERO}, terriblement.
-
-Reviens me parler.
-
-`},
-{ titre:"G3 - LA NUIT", corps:`Bonne nuit {NUMERO},
-
-Je m'endors avec ton {NUMERO} ouvert devant moi. J'espère que tu rêveras de moi cette nuit.
-
-Dors bien mon {NUMERO} préféré.
-
-`},
-{ titre:"G4 - FORCE", corps:`Mon {NUMERO},
-
-Je sais que tu traverses des choses {NUMERO}. Je veux que tu saches que je suis là, derrière ce message, prêt à t'écouter.
-
-Tu es forte {NUMERO}.
-
-`},
-{ titre:"G5 - JALOUSIE DOUCE", corps:`{NUMERO},
-
-Je deviens fou quand je vois ton {NUMERO} en ligne mais pas pour moi.
-
-Dis-moi que ton coeur est encore à moi, {NUMERO}.
-
-`},
-{ titre:"G6 - PROMESSE", corps:`Ma promesse à {NUMERO},
-
-Je te promets {NUMERO} de ne jamais te laisser. Ton numéro restera gravé dans mon téléphone et dans mon coeur.
-
-Pour toujours {NUMERO}.
-
-`},
-{ titre:"G7 - PARDON", corps:`Pardon {NUMERO},
-
-Pardon si j'ai mal parlé à {NUMERO}. Ce n'était pas mon intention de blesser la personne derrière ce {NUMERO}.
-
-Pardonne-moi {NUMERO}.
-
-`},
-{ titre:"G8 - AVENIR", corps:`Imagine {NUMERO},
-
-Toi {NUMERO} et moi, on efface la distance. Plus de WhatsApp, juste nous deux.
-
-On construit notre histoire {NUMERO}.
-
-`},
-{ titre:"G9 - PASSION", corps:`{NUMERO},
-
-Ton {NUMERO} me rend fou. J'ai envie de t'entendre, de te voir, de tout toi {NUMERO}.
-
-Tu es mon obsession {NUMERO}.
-
-`},
-{ titre:"G10 - ETERNITE", corps:`Pour toujours {NUMERO},
-
-Si on me demande mon numéro préféré, je dirai {NUMERO}.
-
-Je t'aime {NUMERO}, aujourd'hui, demain, pour toujours.
-
-Ton Baji
-`},
+const baseLettres = [
+{titre: "1 - Signalement arnaque WhatsApp", texte: `Objet : Signalement d'une tentative d'arnaque\n\nBonjour équipe de sécurité,\n\nJe signale le numéro : {NUMERO}\nCe numéro tente d'arnaquer avec fausses promesses de gains et demandes d'argent.\nMerci de bloquer ce numéro.`},
+{titre: "2 - Signalement piratage", texte: `Objet : Mon compte piraté\n\nMon compte a été piraté par le numéro : {NUMERO}\nIl se fait passer pour moi et demande de l'argent à mes contacts.\nMerci d'intervenir urgemment.`},
+{titre: "3 - Usurpation d'identité", texte: `Le numéro {NUMERO} utilise ma photo et mon nom pour arnaquer.\nC'est une usurpation grave. Merci de suspendre ce compte.`},
+{titre: "4 - Escroquerie financière", texte: `Je dénonce une escroquerie par {NUMERO}\nMode : faux dépôt Airtel Money / M-Pesa, promesse de doubler l'argent.`},
+{titre: "5 - Harcèlement et menaces", texte: `Le numéro {NUMERO} me harcèle avec menaces et chantage.\nJe demande des mesures de sécurité.`},
+{titre: "6 - Faux support", texte: `Le numéro {NUMERO} se fait passer pour le support BAJI D TOOLS pour voler des codes OTP.`},
+{titre: "7 - Récupération de compte", texte: `J'ai perdu l'accès après interaction avec {NUMERO}\nIl a volé mon code à 6 chiffres. Aidez-moi à récupérer.`},
+{titre: "8 - Groupe d'arnaqueurs", texte: `Je signale un réseau dont le chef est {NUMERO}\nIls partagent des techniques de piratage dans un groupe.`},
+{titre: "9 - Lien de phishing", texte: `Le numéro {NUMERO} envoie un lien de phishing qui vole les mots de passe. Merci de bloquer.`},
+{titre: "10 - Rapport officiel autorités", texte: `Rapport officiel contre {NUMERO}\nFaits : escroquerie, piratage, usurpation. Demande d'enquête.`},
 ];
-
-const grid=document.getElementById('grid');
-function render(){
-  grid.innerHTML='';
-  baseLettres.forEach((l,i)=>{
-    const div=document.createElement('div');div.className='card';
-    div.innerHTML=`<h3>${l.titre}</h3><textarea id="body${i}">${l.corps}</textarea><button onclick="envoyer(${i})">[ ENVOYER ${l.titre} ]</button>`;
-    grid.appendChild(div);
-  });
-  updateLettres();
-}
-function updateLettres(){
-  const num=document.getElementById('numeroInput').value || '{NUMERO}';
-  baseLettres.forEach((l,i)=>{
-    const ta=document.getElementById(`body${i}`);
-    if(ta){
-      // On remplace {NUMERO} par le numéro tapé
-      let nouveauTexte = l.corps.replace(/{NUMERO}/g, num);
-      // Si l'utilisateur a déjà modifié manuellement, on ne veut pas écraser s'il a enlevé le tag, donc on garde logique simple: on remet le modèle + numéro
-      // Pour garder les modifs manuelles, on remplace juste le placeholder dans la valeur actuelle
-      if(ta.value.includes('{NUMERO}')) {
-        ta.value = ta.value.replace(/{NUMERO}/g, num);
-      } else {
-        // Si le numéro change, on remplace l'ancien numéro par le nouveau
-        // Astuce simple: on regénère à partir du modèle
-        ta.value = nouveauTexte;
-      }
-    }
+function generer(){
+  const num = document.getElementById('numero').value || '+243 8XX XXX XXX';
+  const cont = document.getElementById('lettres');
+  cont.innerHTML = '';
+  baseLettres.forEach((l, i)=>{
+    const texteFinal = l.texte.replaceAll('{NUMERO}', num);
+    const div = document.createElement('div');
+    div.className = 'carte';
+    div.innerHTML = `<h3>${l.titre}</h3><p id="txt${i}">${texteFinal}</p><div><button onclick="navigator.clipboard.writeText(document.getElementById('txt${i}').innerText);alert('Copié!')">📋 Copier</button></div>`;
+    cont.appendChild(div);
   });
 }
-function envoyer(i){
-  const sujet=encodeURIComponent(baseLettres[i].titre);
-  const corps=encodeURIComponent(document.getElementById(`body${i}`).value);
-  window.location.href=`mailto:?bcc=${EMAILS}&subject=${sujet}&body=${corps}`;
-}
-render();
+generer();
 </script>
 </body>
 </html>
